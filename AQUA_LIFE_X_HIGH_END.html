@@ -1,0 +1,691 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061b35">
+<title>AQUA LIFE X</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--panel:#102b48;--cyan:#4deaff;--text:#f0faff;--muted:#9bbbd1;--green:#5dffba}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#123d63,#061426 65%);color:var(--text);font-family:Nunito,sans-serif;min-height:100vh}
+button{font-family:inherit;cursor:pointer;border:0;color:white}
+header{display:flex;align-items:center;justify-content:space-between;padding:17px 18px;position:sticky;top:0;z-index:10;background:#061a30ef;backdrop-filter:blur(15px);border-bottom:1px solid #4deaff25}
+.logo{font-size:20px;font-weight:900;letter-spacing:1px}.logo span{color:var(--cyan)}
+.wallet{display:flex;gap:8px}.currency{background:#163958;border:1px solid #4deaff30;border-radius:20px;padding:7px 11px;font-size:13px;font-weight:900}
+main{max-width:900px;margin:auto;padding:17px 14px 100px}
+h2{font-size:19px;margin:20px 0 12px}.muted{color:var(--muted);font-size:13px}
+.aquarium{height:350px;position:relative;overflow:hidden;border-radius:23px;border:3px solid #75eaff99;background:radial-gradient(ellipse at 50% 0%,#8beeff55,transparent 48%),linear-gradient(180deg,#0c80ae,#075b88 35%,#06456d 72%,#032e4e);box-shadow:0 0 35px #00bfff35,inset 0 0 45px #00d5ff22}
+.aquarium:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(112deg,#fff3,transparent 22%,#ffffff08 50%,transparent 70%)}
+.aquarium:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(165deg,transparent 0 35px,#b4faff0b 37px 39px,transparent 42px 70px);animation:waterMove 9s linear infinite}
+@keyframes waterMove{to{background-position:0 150px}}
+.waterline{position:absolute;top:0;left:-10%;width:120%;height:8px;background:#d9ffff99;box-shadow:0 4px 22px #a3ffff;z-index:5;animation:wave 3s ease-in-out infinite alternate}
+@keyframes wave{to{transform:translateX(3%) scaleY(.7)}}
+.light-rays{position:absolute;top:0;left:12%;width:150px;height:260px;background:linear-gradient(180deg,#d5ffff22,transparent);transform:skew(-25deg);filter:blur(9px);animation:ray 5s ease-in-out infinite alternate}
+@keyframes ray{to{opacity:.25;transform:skew(-15deg) translateX(35px)}}
+.sand{position:absolute;bottom:-12px;left:-5%;width:110%;height:40px;background:linear-gradient(#e0d3a1,#99876a 65%,#635e50);border-radius:50% 50% 0 0;z-index:2}
+.plant{position:absolute;bottom:20px;width:13px;height:95px;background:linear-gradient(90deg,#075d45,#36e6a0);border-radius:100% 0 100% 0;transform-origin:bottom;animation:plantMove 3s ease-in-out infinite alternate;z-index:3}
+.plant:after{content:"";position:absolute;top:32px;left:9px;width:17px;height:48px;background:linear-gradient(90deg,#0a885c,#62f5b0);border-radius:100% 0 100% 0;transform:rotate(30deg)}
+@keyframes plantMove{to{transform:rotate(9deg)}}
+.rock{position:absolute;bottom:20px;width:48px;height:26px;border-radius:50% 50% 20% 20%;background:linear-gradient(#a9b6c0,#45596d);box-shadow:inset -8px -5px 10px #192b40;z-index:3}
+.bubble{position:absolute;bottom:-15px;width:7px;height:7px;border:1px solid #c9ffffaa;border-radius:50%;z-index:2;animation:bubbleUp 7s linear infinite}
+@keyframes bubbleUp{to{transform:translateY(-390px) translateX(25px);opacity:0}}
+.fish-body{position:absolute;z-index:3;width:57px;height:34px;border-radius:55% 48% 48% 55%;background:linear-gradient(180deg,var(--fish-light),var(--fish-color) 55%,var(--fish-dark));box-shadow:inset -5px -5px 8px #001a3544,0 4px 9px #001a3544;animation:swim 5s ease-in-out infinite alternate;transform-origin:center}
+.fish-body:before{content:"";position:absolute;right:-18px;top:8px;width:23px;height:20px;background:linear-gradient(135deg,var(--fish-light),var(--fish-dark));clip-path:polygon(0 50%,100% 0,85% 100%);transform-origin:left center;animation:tail 1s ease-in-out infinite alternate}
+.fish-body:after{content:"";position:absolute;left:12px;top:-8px;width:25px;height:14px;background:var(--fish-light);clip-path:polygon(0 100%,40% 0,100% 100%)}
+.fish-eye{position:absolute;left:8px;top:10px;width:7px;height:7px;background:white;border-radius:50%;z-index:5;box-shadow:0 0 4px #fff}
+.fish-eye:after{content:"";position:absolute;left:2px;top:1px;width:3px;height:3px;background:#061426;border-radius:50%}
+.fish-stripe{position:absolute;top:2px;left:23px;width:6px;height:30px;background:#fff9;border-radius:50%;z-index:1}
+@keyframes tail{to{transform:rotate(18deg)}}
+@keyframes swim{0%{translate:-5px 0}50%{translate:25px -13px}100%{translate:0 7px}}
+.fish-body.small{scale:.75}.fish-body.large{scale:1.3}
+.fish-body.eating{animation:eating .35s ease-in-out infinite alternate!important}
+@keyframes eating{to{transform:scale(1.13) rotate(-5deg)}}
+.fish-body.happy{animation:happy .45s ease-in-out 4!important}
+@keyframes happy{50%{transform:translateY(-22px) scale(1.15)}}
+.fish-body.cleaning{filter:brightness(1.5) drop-shadow(0 0 9px #aaffff);animation:cleaning .5s ease-in-out 4!important}
+@keyframes cleaning{50%{transform:rotate(8deg) translateY(-8px)}}
+.seahorse{position:absolute;z-index:3;font-size:44px;filter:drop-shadow(0 5px 5px #001b35aa);animation:seahorseSwim 4s ease-in-out infinite alternate}
+@keyframes seahorseSwim{to{transform:translateY(-16px) rotate(8deg)}}
+.jelly{position:absolute;font-size:42px;z-index:3;animation:jellyFloat 5s ease-in-out infinite alternate}
+@keyframes jellyFloat{to{transform:translateY(-30px) scale(1.08)}}
+.aquarium-label{position:absolute;top:15px;left:15px;z-index:6;background:#001e39b8;padding:7px 12px;border-radius:20px;font-size:12px}
+.aquarium-footer{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:12px}
+.stat{background:var(--panel);padding:11px;border-radius:13px;flex:1;min-width:100px;border:1px solid #4deaff20}
+.stat small{color:var(--muted);display:block;font-size:11px}.stat strong{font-size:17px}
+.progress{height:7px;background:#061a30;border-radius:10px;margin-top:7px;overflow:hidden}.progress div{height:100%;border-radius:10px;background:var(--green);transition:width .4s}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.card{background:linear-gradient(145deg,#163958,#0e2944);border:1px solid #4deaff22;border-radius:17px;padding:13px}
+.pet{display:flex;gap:11px;align-items:center}.pet-icon{font-size:38px}.pet-name{font-weight:900}.pet-info{font-size:11px;color:var(--muted)}
+.pet-bars{margin-top:10px}
+.barline{display:flex;justify-content:space-between;gap:8px;font-size:11px;margin:6px 0;align-items:center}
+.barline .progress{flex:1;margin:0}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:15px}
+.action{padding:13px 5px;border-radius:14px;background:linear-gradient(145deg,#1d6792,#17466e);font-weight:900;font-size:12px;border:1px solid #69eaff38}
+.action span{display:block;font-size:23px;margin-bottom:4px}
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:space-around;padding:10px 4px 15px;background:#071a2df5;border-top:1px solid #4deaff25;backdrop-filter:blur(15px)}
+.tab{color:#8caec5;background:none;font-size:11px;font-weight:800;flex:1}.tab span{display:block;font-size:21px;margin-bottom:3px}.tab.active{color:var(--cyan)}
+.page{display:none}.page.active{display:block}
+.shop-item{display:flex;align-items:center;gap:12px;margin-bottom:10px;background:var(--panel);padding:13px;border-radius:16px;border:1px solid #4deaff20}
+.shop-emoji{font-size:37px}.shop-details{flex:1;min-width:0}.shop-details strong{display:block}
+.buy,.primary{background:linear-gradient(135deg,#23cfff,#276dff);border-radius:11px;padding:10px 12px;font-weight:900}
+.secondary{background:#234665;border-radius:12px;padding:11px 13px;font-weight:900}
+.notice{position:fixed;top:75px;left:50%;transform:translateX(-50%);background:#163d5b;border:1px solid var(--cyan);padding:12px 18px;border-radius:13px;z-index:50;display:none;text-align:center;width:max-content;max-width:90%}
+.empty{text-align:center;padding:35px 15px;color:var(--muted)}
+.modal-bg{display:none;position:fixed;inset:0;background:#000a;z-index:40;align-items:center;justify-content:center;padding:18px}
+.modal{width:100%;max-width:400px;background:#102b48;border:1px solid #4deaff55;border-radius:20px;padding:22px;text-align:center;max-height:90vh;overflow:auto}
+.modal input{width:100%;padding:12px;border-radius:10px;border:1px solid #4deaff55;background:#071a2d;color:white;margin:12px 0}
+.game-stage{background:linear-gradient(#087aa5,#06436b);height:300px;border-radius:18px;position:relative;overflow:hidden;border:2px solid #68eaff;margin:12px 0;touch-action:manipulation}
+.game-target{position:absolute;font-size:35px;background:none;padding:5px;animation:targetFloat 1.5s ease-in-out infinite alternate}
+@keyframes targetFloat{to{transform:translateY(-10px) rotate(12deg)}}
+.game-score{font-weight:900;color:var(--cyan);font-size:18px}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}
+.memory-card{background:#17496c;border:1px solid #6beaff;border-radius:12px;aspect-ratio:1;font-size:28px}
+.memory-card.done{background:#1b765d;opacity:.65}
+.game-select{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.game-choice{padding:14px 8px;background:#17496c;border:1px solid #4deaff55;border-radius:14px;font-weight:900}
+.game-choice span{display:block;font-size:29px;margin-bottom:5px}
+.heart-float{position:absolute;z-index:8;pointer-events:none;font-size:24px;animation:heartUp 1.5s forwards}
+@keyframes heartUp{to{transform:translateY(-75px) scale(1.5);opacity:0}}
+.clean-flash{position:absolute;inset:0;z-index:7;pointer-events:none;background:radial-gradient(circle,#caffff66,transparent 70%);animation:flash .7s ease-out 3}
+@keyframes flash{to{opacity:0}}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+/* AQUA LIFE X — visual upgrade */
+:root{--panel:#0d2d4e;--cyan:#75f3ff;--text:#f4fcff;--muted:#a9c9dc;--green:#72ffc5}
+body{background:radial-gradient(ellipse at 50% -15%,#1d7198 0,#0a2948 42%,#020c1b 100%);background-attachment:fixed}
+header{background:linear-gradient(100deg,#04172beF,#092b49eF);box-shadow:0 8px 35px #00101f88}
+.logo{text-shadow:0 0 18px #42dfff66}
+.currency{background:linear-gradient(145deg,#1c5274,#102d4c);box-shadow:inset 0 1px #ffffff18,0 5px 15px #00101f55}
+.aquarium{height:390px;border:2px solid #a5f8ffcc;background:
+ radial-gradient(ellipse at 18% 12%,#e4ffff55,transparent 22%),
+ radial-gradient(ellipse at 80% 22%,#7deaff35,transparent 30%),
+ linear-gradient(180deg,#35b5d2 0%,#087da9 22%,#07577f 58%,#032c4b 100%);
+ box-shadow:0 0 0 5px #57dfff12,0 0 45px #00cfff55,inset 0 0 65px #b9faff22,inset 0 -25px 40px #001d35aa}
+.aquarium:before{background:linear-gradient(112deg,#ffffff55 0%,transparent 18%,#ffffff0a 43%,transparent 66%,#c5ffff18 100%),radial-gradient(ellipse at 50% 0%,#ffffff22,transparent 55%)}
+.aquarium:after{background:repeating-linear-gradient(165deg,transparent 0 23px,#d9ffff12 25px 27px,transparent 30px 52px),linear-gradient(90deg,transparent,#c8ffff0a,transparent);animation:waterMove 7s linear infinite}
+.aquarium .waterline{height:10px;background:linear-gradient(90deg,#dfffff88,#ffffffdd,#b9ffff88);box-shadow:0 4px 28px #b8ffff}
+.light-rays{width:220px;height:330px;background:linear-gradient(180deg,#efffff38,transparent);filter:blur(13px)}
+.sand{height:48px;background:radial-gradient(ellipse at 30% 0%,#fff2c5,#c9b77f 45%,#74664d 100%);box-shadow:0 -5px 18px #f8e4a533}
+.plant{filter:drop-shadow(0 0 5px #36ffad55)}
+.rock{background:radial-gradient(ellipse at 30% 20%,#d5e0e7,#718697 40%,#293f54 100%);box-shadow:inset -8px -7px 12px #14263c,0 5px 9px #001a35aa}
+.fish-body{width:64px;height:39px;border:1px solid #ffffff55;background:radial-gradient(ellipse at 30% 20%,#ffffff99,transparent 27%),linear-gradient(180deg,var(--fish-light),var(--fish-color) 48%,var(--fish-dark));box-shadow:inset 0 3px 5px #ffffff55,inset -7px -7px 10px #001a3555,0 7px 13px #001a3566;filter:saturate(1.18)}
+.fish-body:before{right:-20px;top:9px;width:26px;height:22px;filter:drop-shadow(0 2px 2px #001a3566)}
+.fish-body:after{left:18px;top:-10px;width:26px;height:17px;filter:drop-shadow(0 1px 2px #001a3566)}
+.fish-eye{left:9px;top:11px;width:9px;height:9px;box-shadow:0 0 0 2px #ffffff55,0 0 8px #fff}
+.fish-eye:after{left:3px;top:2px;width:4px;height:4px}
+.fish-stripe{left:27px;width:7px;height:35px;box-shadow:0 0 5px #fff8}
+.bubble{background:radial-gradient(circle at 30% 25%,#ffffffaa 0 12%,#caffff22 35%,transparent 65%);box-shadow:inset 1px 1px 2px #fff8,0 0 5px #baffff55}
+.card,.stat,.shop-item{box-shadow:0 8px 24px #00101f55,inset 0 1px #ffffff0b}
+.card{background:linear-gradient(145deg,#19466a,#0a2541);border-color:#7ceeff30}
+.action,.buy,.primary,.secondary,.game-choice{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+.action:hover,.buy:hover,.primary:hover,.secondary:hover,.game-choice:hover{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 8px 22px #00cfff30}
+.action:active,.buy:active,.primary:active,.secondary:active{transform:scale(.97)}
+.tabs{box-shadow:0 -8px 28px #00101f66}
+.pet-icon{filter:drop-shadow(0 4px 5px #00101f99)}
+/* Animations for every creature type, not only the CSS fish */
+.seahorse.eating,.jelly.eating{animation:creatureEat .35s ease-in-out 5}
+.seahorse.happy,.jelly.happy{animation:creatureHappy .5s ease-in-out 4}
+.seahorse.cleaning,.jelly.cleaning{filter:brightness(1.5) drop-shadow(0 0 12px #aaffff);animation:creatureClean .5s ease-in-out 4}
+@keyframes creatureEat{50%{transform:translateY(-7px) scale(1.12) rotate(-5deg)}}
+@keyframes creatureHappy{50%{transform:translateY(-25px) rotate(12deg) scale(1.12)}}
+@keyframes creatureClean{50%{transform:rotate(-10deg) translateY(-8px)}}
+.fish-body:active{filter:brightness(1.3)}
+.care-panel{margin-top:16px;padding:14px;border:1px solid #6cecff33;border-radius:18px;background:linear-gradient(145deg,#123b5c,#09223c);box-shadow:0 8px 25px #00101f55}
+.care-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}
+.care-actions button{padding:12px 8px;border-radius:13px;background:linear-gradient(145deg,#17628a,#123e65);border:1px solid #7deaff44;font-weight:900;font-size:12px}
+.care-actions button span{display:block;font-size:22px;margin-bottom:4px}
+.care-meter{display:flex;align-items:center;gap:9px;margin:9px 0;font-size:12px}
+.care-meter .progress{flex:1;margin:0}
+@media(min-width:650px){.aquarium{height:450px}.care-actions{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:390px){.aquarium{height:330px}.care-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* Mejoras de interfaz: juegos, controles, comida y alimentación */
+button{transition:transform .16s ease,filter .16s ease,box-shadow .18s ease}
+button:focus-visible{outline:3px solid #a9f7ff;outline-offset:3px}
+.action,.buy,.primary,.secondary,.game-choice,.care-actions button{box-shadow:0 7px 18px #00142666,inset 0 1px #ffffff35}
+.action{background:linear-gradient(155deg,#278fbd,#15517d 70%);border:1px solid #8ceeff55}
+.primary,.buy{background:linear-gradient(135deg,#39e2ff,#2879ff 75%);box-shadow:0 6px 18px #007eff44,inset 0 1px #ffffff88}
+.secondary{background:linear-gradient(145deg,#2b5678,#173b5c);border:1px solid #8bdfff55}
+.action:active,.buy:active,.primary:active,.secondary:active,.game-choice:active,.care-actions button:active{transform:scale(.96)}
+.game-choice{min-height:112px;background:linear-gradient(150deg,#1c638b,#103451);border:1px solid #76eaff66;border-radius:17px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.game-choice span{font-size:34px;filter:drop-shadow(0 4px 4px #00142688)}
+.game-stage{height:340px;background:radial-gradient(ellipse at 50% 0%,#48c9e8,#087da8 48%,#043453);border:2px solid #9af5ff;box-shadow:inset 0 0 35px #c8ffff22,0 10px 25px #00142666}
+.game-target{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#ffffff66,#2acfff33 45%,#063d6655);border:1px solid #c9fbff99;box-shadow:0 5px 14px #00142688,inset 0 1px #ffffff99;font-size:29px;touch-action:manipulation}
+.game-target:active{transform:scale(.8)}
+.game-score{background:#052744aa;padding:7px 12px;border-radius:20px;border:1px solid #8deeff55}
+.memory-card{background:linear-gradient(145deg,#267da3,#103c61);box-shadow:0 5px 12px #00142666,inset 0 1px #ffffff44;transition:transform .18s,background .18s}
+.memory-card:not(.done):active{transform:scale(.94)}
+.memory-card.done{background:linear-gradient(145deg,#24a77d,#12634f);box-shadow:0 0 16px #51ffc566}
+#gameInstruction{background:#06264288;border:1px solid #7deaff30;padding:10px 12px;border-radius:12px}
+.shop-item{background:linear-gradient(145deg,#19496d,#0b2946);border:1px solid #78eaff35}
+.shop-emoji,.food-art{width:56px;height:56px;flex:0 0 56px;display:grid;place-items:center;border-radius:17px;background:radial-gradient(circle at 30% 20%,#ffffff35,#2b91bd22 65%,#041d33);box-shadow:inset 0 1px #ffffff35,0 4px 10px #00142666;font-size:32px}
+.food-card{display:flex;align-items:center;gap:12px;padding:13px;border-radius:17px;margin-bottom:10px;background:linear-gradient(145deg,#1b5274,#0c2b49);border:1px solid #82eaff44;box-shadow:0 8px 20px #00142655}
+.food-info{flex:1;min-width:0}.food-info strong{display:block;font-size:14px}.food-info small{display:block;color:#b5d3e5;font-size:11px;line-height:1.35;margin-top:3px}
+.food-stock{font-size:12px;font-weight:900;color:#9fffe0;margin-top:5px}
+.feed-choice{display:flex;align-items:center;gap:10px;width:100%;padding:11px;margin:8px 0;border-radius:13px;text-align:left;background:linear-gradient(145deg,#1d5275,#10314f);border:1px solid #7ceaff44}
+.feed-choice:disabled{opacity:.4;filter:grayscale(1)}
+.feed-choice .food-symbol{font-size:27px;width:38px;text-align:center}.feed-choice .food-copy{flex:1}.feed-choice small{display:block;color:#b5d3e5;font-size:11px;margin-top:2px}
+.feed-choice b{color:#a4ffe1;font-size:12px}
+.feed-pop{position:absolute;z-index:9;pointer-events:none;font-size:20px;animation:foodFall 1.35s ease-in forwards;filter:drop-shadow(0 3px 4px #00142688)}
+@keyframes foodFall{0%{transform:translateY(-12px) scale(.65);opacity:0}18%{opacity:1}75%{transform:translateY(90px) scale(1.08)}100%{transform:translateY(125px) scale(.7);opacity:0}}
+.feed-burst{position:absolute;z-index:8;pointer-events:none;font-size:18px;animation:feedBurst .9s ease-out forwards}
+@keyframes feedBurst{to{transform:translateY(-38px) scale(1.4);opacity:0}}
+.care-actions button{background:linear-gradient(150deg,#217eaa,#123d62);border:1px solid #80eaff55}
+.pet .pet-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:16px;background:radial-gradient(circle at 30% 20%,#ffffff30,#2c8dbb22 70%,#062744);box-shadow:inset 0 1px #ffffff35}
+.pet-bars .progress{height:9px;background:#04182b;border:1px solid #ffffff12}
+@media(max-width:420px){.game-stage{height:310px}.game-choice{min-height:102px}.food-card{gap:9px;padding:10px}.food-art,.shop-emoji{width:50px;height:50px;flex-basis:50px}}
+
+
+/* ===== HIGH-END AQUARIUM: DEPTH, LIGHT, GLASS AND CREATURES ===== */
+.aquarium{isolation:isolate;perspective:1000px;transition:background 2.4s ease,border-color 2.4s ease,box-shadow 2.4s ease}
+.aquarium:before{z-index:11;background:linear-gradient(112deg,#fff7 0%,transparent 17%,#ffffff0a 43%,transparent 67%,#d9ffff20 100%),radial-gradient(ellipse at 4% 2%,#fff8,transparent 22%);mix-blend-mode:screen}
+.aquarium:after{z-index:2;opacity:.9;mix-blend-mode:screen}
+.depth-layer{position:absolute;inset:0;pointer-events:none}
+.depth-far{z-index:0;background:radial-gradient(ellipse at 18% 66%,#60ffda20,transparent 33%),radial-gradient(ellipse at 82% 48%,#73eaff22,transparent 36%),linear-gradient(180deg,#e8ffff12,transparent 45%);transform:translateZ(-40px) scale(1.1);animation:farDrift 20s ease-in-out infinite alternate}
+.depth-near{z-index:1;inset:18% -8% 5%;background:radial-gradient(ellipse at 25% 65%,#b9ffe51a,transparent 32%),radial-gradient(ellipse at 72% 40%,#b7f8ff19,transparent 36%);filter:blur(9px);animation:nearDrift 14s ease-in-out infinite alternate}
+@keyframes farDrift{to{transform:translate3d(2%,-1%,-22px) scale(1.14)}}
+@keyframes nearDrift{to{transform:translate3d(-2%,2%,0) scale(1.04)}}
+.glass-sheen{position:absolute;inset:0;z-index:12;pointer-events:none;border-radius:19px;background:linear-gradient(115deg,transparent 0 58%,#eaffff12 63%,transparent 68%),linear-gradient(90deg,#fff1,transparent 7%,transparent 93%,#fff2);box-shadow:inset 0 0 18px #e4ffff35,inset 0 -16px 28px #001b3a44}
+.light-rays{z-index:1;left:8%;width:42%;height:95%;opacity:.65;filter:blur(14px);background:linear-gradient(180deg,#efffff5c 0%,#a4f5ff1d 48%,transparent 100%);clip-path:polygon(12% 0,60% 0,100% 100%,0 100%);transform-origin:top;animation:softRays 10s ease-in-out infinite alternate}
+@keyframes softRays{0%{opacity:.25;transform:skew(-13deg) translateX(-4%)}100%{opacity:.78;transform:skew(-4deg) translateX(13%)}}
+.bubble{background:radial-gradient(circle at 30% 25%,#fff 0 8%,#dfffff55 18%,#bdfaff13 48%,transparent 70%);box-shadow:inset 1px 1px 3px #fff9,0 0 7px #aaffff66}
+.cycle-widget{position:absolute;right:10px;top:10px;z-index:15;display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:14px;background:#031c32c9;border:1px solid #c6faff66;backdrop-filter:blur(13px);box-shadow:0 5px 20px #00101f66}
+.cycle-widget>span:first-child{font-size:22px}.cycle-widget b,.cycle-widget small{display:block}.cycle-widget b{font-size:11px}.cycle-widget small{font-size:9px;color:#c5e8f4}
+.cycle-button{padding:6px 9px;border-radius:9px;background:#ffffff22;border:1px solid #d7fbff77;font-size:9px;font-weight:900}
+.aquarium[data-phase="sunset"]{background:radial-gradient(ellipse at 50% 0%,#ffd18b77,transparent 48%),linear-gradient(180deg,#bd6b70,#76527f 43%,#293b67 100%);border-color:#ffc6a5;box-shadow:0 0 40px #ff9a6a66,inset 0 0 45px #ffc58c30}
+.aquarium[data-phase="sunset"] .light-rays{background:linear-gradient(180deg,#ffe0ad66,#ff9c7b20,transparent)}
+.aquarium[data-phase="night"]{background:radial-gradient(ellipse at 50% 0%,#4266a866,transparent 48%),linear-gradient(180deg,#102c59,#071b3c 52%,#031329);border-color:#8bc8ff99;box-shadow:0 0 42px #377bff55,inset 0 0 58px #153f8c66}
+.aquarium[data-phase="night"] .light-rays{opacity:.1;filter:blur(20px)}
+.aquarium[data-phase="night"] .plant{filter:brightness(.62) saturate(1.4) drop-shadow(0 0 8px #3bffd477)}
+.aquarium[data-phase="night"] .jelly,.aquarium[data-phase="night"] .seahorse[data-glow="true"]{filter:drop-shadow(0 0 13px #83eaff) brightness(1.35)}
+.aquarium[data-phase="night"] .decoration[data-refuge="true"]{filter:drop-shadow(0 0 12px #73dfffaa) brightness(1.2)!important}
+.creature-swim{--drift:25px;--duration:5s;animation:creatureGlide var(--duration) ease-in-out infinite alternate;will-change:transform,left,top;cursor:pointer;transition:left 5s cubic-bezier(.2,.8,.2,1),top 5s cubic-bezier(.2,.8,.2,1),filter .5s}
+@keyframes creatureGlide{0%{transform:translate3d(-5px,2px,0) rotate(-2deg)}45%{transform:translate3d(var(--drift),-13px,0) rotate(3deg)}100%{transform:translate3d(0,6px,0) rotate(-1deg)}}
+.fish-body.creature-swim:before{animation:tail  .42s ease-in-out infinite alternate}
+.seahorse.creature-swim{animation:seahorseSwim 3.7s ease-in-out infinite alternate}
+.jelly.creature-swim{animation:jellyFloat 4.8s ease-in-out infinite alternate}
+.creature-swim.sleeping{animation:sleepBob 4s ease-in-out infinite!important;filter:brightness(.72) saturate(.7)}
+@keyframes sleepBob{50%{transform:translateY(-3px) scale(.98)}}
+.sleep-tag{position:absolute;z-index:8;pointer-events:none;left:50%;top:-18px;font-size:14px;font-weight:900;color:#e3f7ff;text-shadow:0 0 9px #8bdcff;animation:zzz 2.2s ease-in-out infinite}
+@keyframes zzz{0%{opacity:0;transform:translate(0,8px) scale(.8)}30%{opacity:1}100%{opacity:0;transform:translate(12px,-17px) scale(1.12)}}
+.decoration[data-refuge="true"]{cursor:default;filter:drop-shadow(0 5px 7px #001a35aa)}
+.heart-float{filter:drop-shadow(0 0 8px #ff9bd7)}
+.creature-ripple{position:absolute;z-index:9;pointer-events:none;border:2px solid #bdfaff;border-radius:50%;width:16px;height:16px;animation:rippleOut .8s ease-out forwards}
+@keyframes rippleOut{to{transform:scale(4);opacity:0}}
+@media(max-width:430px){.cycle-widget{top:8px;right:8px;gap:5px;padding:6px}.cycle-widget small{font-size:8px}.cycle-button{padding:5px 7px}}
+
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">🐠 AQUA <span>LIFE X</span></div>
+ <div class="wallet"><div class="currency">🪙 <b id="coins">0</b></div><div class="currency">💎 <b id="gems">0</b></div></div>
+</header>
+<main>
+<section id="home" class="page active">
+ <h2>Tu mundo submarino 🌊</h2>
+ <div class="aquarium" id="aquarium">
+  <div class="waterline"></div><div class="light-rays"></div>
+  <div class="aquarium-label">🏝️ Mi acuario principal</div>
+  <div class="cycle-widget" id="cycleWidget">
+   <span id="cycleIcon">☀️</span><span><b id="cycleName">Día</b><small id="cycleClock">Agua cristalina</small></span>
+   <button class="cycle-button" type="button" onclick="nextAquariumPhase()">Cambiar</button>
+  </div>
+  <div class="depth-layer depth-far"></div><div class="depth-layer depth-near"></div>
+  <div class="glass-sheen"></div>
+  <div class="plant" style="left:8%;height:85px"></div><div class="plant" style="left:15%;height:60px"></div><div class="plant" style="right:12%;height:105px"></div>
+  <div class="rock" style="left:27%"></div><div class="rock" style="right:28%;width:65px"></div><div class="sand"></div>
+ </div>
+ <div class="aquarium-footer">
+  <div class="stat"><small>💧 Calidad del agua</small><strong id="waterText">100%</strong><div class="progress"><div id="waterBar"></div></div></div>
+  <div class="stat"><small>🐠 Habitantes</small><strong id="fishCount">0 peces</strong></div>
+  <div class="stat"><small>⭐ Nivel</small><strong id="level">1</strong></div>
+ </div>
+ <h2>Acciones rápidas</h2>
+ <div class="actions">
+  <button class="action" onclick="feedAll()"><span>🥣</span>Alimentar</button>
+  <button class="action" onclick="cleanWater()"><span>🫧</span>Limpiar</button>
+  <button class="action" onclick="claimReward()"><span>🎁</span>Recompensa</button>
+ </div>
+ <h2>Mis mascotas</h2><div id="pets" class="grid"></div>
+</section>
+<section id="games" class="page">
+ <h2>🎮 ¡Hora de jugar!</h2>
+ <p class="muted">Elige una mascota y juega con ella. ¡Se pondrá muy feliz!</p>
+ <div id="gamePetList" class="grid"></div>
+ <div id="gameSelection" style="display:none">
+  <div class="card">
+   <div id="selectedPet" style="text-align:center;font-size:45px">🐠</div>
+   <h2 id="selectedName" style="text-align:center;margin:5px">Mi pez</h2>
+   <p class="muted" style="text-align:center">¿A qué quieres jugar?</p>
+   <div class="game-select">
+    <button class="game-choice" onclick="startGame('bubbles')"><span>🫧</span>Atrapa burbujas</button>
+    <button class="game-choice" onclick="startGame('food')"><span>🦐</span>Atrapa comida</button>
+    <button class="game-choice" onclick="startGame('memory')"><span>🧠</span>Memoria marina</button>
+    <button class="game-choice" onclick="startGame('dance')"><span>🎵</span>Baile acuático</button>
+   </div>
+   <button class="secondary" style="width:100%;margin-top:12px" onclick="backToPets()">Cambiar mascota</button>
+  </div>
+ </div>
+ <div id="activeGame" style="display:none">
+  <div class="card">
+   <div style="display:flex;justify-content:space-between;align-items:center"><b id="gameTitle">Juego</b><span class="game-score" id="gameScore">0 puntos</span></div>
+   <p class="muted" id="gameInstruction">¡Vamos a jugar!</p>
+   <div id="gameArea"></div>
+   <button class="secondary" style="width:100%;margin-top:10px" onclick="endGame(false)">Salir del juego</button>
+  </div>
+ </div>
+</section>
+<section id="store" class="page">
+ <h2>🛒 Tienda de mascotas</h2><p class="muted">¡Descubre nuevas especies para tu mundo!</p><div id="fishShop"></div>
+ <h2>🥣 Alimentos</h2><div id="foodShop"></div>
+ <h2>🪸 Decoraciones</h2><p class="muted">Los objetos comprados aparecerán dentro de tu pecera.</p><div id="decorShop"></div>
+ <h2>✨ Objetos especiales</h2><div id="specialShop"></div>
+</section>
+<section id="inventory" class="page"><h2>🎒 Mi inventario</h2><div id="inventoryList"></div></section>
+<section id="profile" class="page">
+ <h2>👑 Mi perfil</h2>
+ <div class="card"><div style="font-size:50px;text-align:center">🐠</div><h2 style="text-align:center">Acuarista</h2><p class="muted" style="text-align:center">Cuida tus mascotas y construye el mejor acuario.</p>
+ <div class="barline"><span>Nivel</span><b id="profileLevel">1</b></div><div class="barline"><span>Experiencia</span><b id="xp">0 XP</b></div><div class="barline"><span>Peces cuidados</span><b id="totalFish">0</b></div><div class="barline"><span>Días de aventura</span><b id="days">1</b></div></div>
+ <h2>⚙️ Opciones</h2><button class="secondary" style="width:100%;margin-bottom:9px" onclick="dailyReward()">🎁 Premio diario</button><button class="secondary" style="width:100%;margin-bottom:9px" onclick="resetGame()">Reiniciar partida</button>
+ <p class="muted">Tu progreso se guarda en este dispositivo.</p>
+</section>
+</main>
+<nav class="tabs">
+ <button class="tab active" onclick="showPage('home',this)"><span>🏠</span>Inicio</button>
+ <button class="tab" onclick="showPage('games',this)"><span>🎮</span>Juegos</button>
+ <button class="tab" onclick="showPage('store',this)"><span>🛒</span>Tienda</button>
+ <button class="tab" onclick="showPage('inventory',this)"><span>🎒</span>Inventario</button>
+ <button class="tab" onclick="showPage('profile',this)"><span>👤</span>Perfil</button>
+</nav>
+<div class="notice" id="notice"></div>
+<div class="modal-bg" id="feedModalBg"><div class="modal">
+ <div style="font-size:44px" id="feedModalEmoji">🐠</div><h2 id="feedModalTitle">Alimentar mascota</h2>
+ <p class="muted" id="feedModalText">Elige el alimento para tu mascota.</p><div id="feedChoices"></div>
+ <button class="secondary" style="width:100%;margin-top:8px" onclick="closeFeedMenu()">Cancelar</button>
+</div></div>
+<div class="modal-bg" id="modalBg"><div class="modal">
+ <div style="font-size:48px" id="modalEmoji">🐠</div><h2 id="modalTitle">Mascota</h2><p id="modalText" class="muted"></p>
+ <input id="petNameInput" maxlength="15" placeholder="Nombre de tu mascota">
+ <button class="primary" onclick="confirmName()">Guardar nombre</button><button class="secondary" style="margin-top:8px" onclick="closeModal()">Cancelar</button>
+</div></div>
+<script>
+const catalog=[
+{id:'gold',name:'Pez dorado',emoji:'🐠',price:100,food:'flakes',color:'#f6a623',description:'Alegre y tranquilo.'},
+{id:'clown',name:'Pez payaso',emoji:'🐠',price:180,food:'flakes',color:'#ff8135',description:'Colorido y curioso.'},
+{id:'blue',name:'Pez azul',emoji:'🐟',price:250,food:'special',color:'#28b9ff',description:'Elegante y veloz.'},
+{id:'turtle',name:'Tortuguita',emoji:'🐢',price:400,food:'veggie',color:'#36b878',description:'Tranquila y amigable.'},
+{id:'shark',name:'Mini tiburón',emoji:'🦈',price:700,food:'special',color:'#9caec4',description:'Un pequeño depredador.'},
+{id:'octopus',name:'Pulpo',emoji:'🐙',price:950,food:'special',color:'#bd78ff',description:'Inteligente y curioso.'},
+{id:'seahorse',name:'Caballito de mar',emoji:'🐴',price:550,food:'special',color:'#f4c34b',description:'Pequeño y encantador.'},
+{id:'angel',name:'Pez ángel',emoji:'🐠',price:650,food:'flakes',color:'#ffe4a1',description:'Hermosas aletas.'},
+{id:'puffer',name:'Pez globo',emoji:'🐡',price:800,food:'special',color:'#f6d76a',description:'Se infla cuando se asusta.'},
+{id:'jelly',name:'Medusa',emoji:'🪼',price:1100,food:'special',color:'#c98cff',description:'Flota por el agua.'}
+];
+const foods=[
+{id:'flakes',name:'Escamas nutritivas',emoji:'🐟',price:15,amount:5,desc:'Alimento diario para peces pequeños y medianos.'},
+{id:'veggie',name:'Mix vegetal',emoji:'🥬',price:20,amount:5,desc:'Hojas y vegetales para mascotas herbívoras.'},
+{id:'special',name:'Cóctel marino',emoji:'🦐',price:35,amount:5,desc:'Pequeños bocados marinos para especies especiales.'},
+{id:'premium',name:'Perlas premium',emoji:'🌟',price:80,amount:5,desc:'Nutrición extra para cualquier mascota.'}
+];
+const decorations=[
+{id:'castle',name:'Castillo submarino',emoji:'🏰',price:180,desc:'Un refugio para tus peces.'},
+ {id:'cottage',name:'Casita de coral',emoji:'🛖',price:210,desc:'Una casita acogedora para dormir.'},
+ {id:'cave',name:'Cueva marina',emoji:'🪨',price:260,desc:'Un refugio rocoso para la noche.'},
+{id:'coral',name:'Coral de colores',emoji:'🪸',price:120,desc:'Un toque de color.'},
+{id:'treasure',name:'Cofre del tesoro',emoji:'💰',price:220,desc:'Un tesoro en el fondo.'},
+{id:'plant',name:'Planta acuática',emoji:'🌿',price:90,desc:'Vegetación submarina.'},
+{id:'shell',name:'Concha marina',emoji:'🐚',price:75,desc:'Una concha decorativa.'},
+{id:'rock',name:'Roca brillante',emoji:'💎',price:160,desc:'Una roca especial.'},
+{id:'ship',name:'Barco hundido',emoji:'🚢',price:350,desc:'Un barco misterioso.'},
+{id:'star',name:'Estrella de mar',emoji:'⭐',price:110,desc:'Una estrella decorativa.'}
+];
+const defaults={coins:500,gems:10,water:100,filter:100,glass:100,xp:0,level:1,totalFish:0,inventory:{flakes:10,veggie:5,special:5,premium:0},fish:[],lastTime:Date.now(),lastReward:0,lastDaily:0,decor:[],day:1};
+function loadGame(){
+ try{const s=JSON.parse(localStorage.getItem('aquaLifeSave'));return s?{...defaults,...s,inventory:{...defaults.inventory,...s.inventory},decor:s.decor||[]}:JSON.parse(JSON.stringify(defaults))}
+ catch(e){return JSON.parse(JSON.stringify(defaults))}
+}
+let game=loadGame(),pendingFish=null,selectedFishId=null,gameTimer=null,gameScore=0,gameHits=0,memoryCards=[],memoryOpen=[],memoryMatched=0;
+function save(){localStorage.setItem('aquaLifeSave',JSON.stringify(game))}
+function notify(msg){const n=document.getElementById('notice');n.textContent=msg;n.style.display='block';clearTimeout(window.nt);window.nt=setTimeout(()=>n.style.display='none',2400)}
+function showPage(id,b){
+ if(gameTimer)endGame(false);
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');if(b)b.classList.add('active');render();
+}
+function makeFish(type){const item=catalog.find(x=>x.id===type);return{id:Date.now()+Math.random(),type,name:item.name,emoji:item.emoji,age:0,hunger:100,health:100,happy:100,alive:true,born:Date.now(),lastFed:Date.now(),lastPlay:0}}
+function buyFish(id){
+ const item=catalog.find(x=>x.id===id);if(!item)return;
+ if(game.coins<item.price)return notify('No tienes suficientes monedas.');
+ if(game.fish.filter(f=>f.alive).length>=12)return notify('Tu acuario está lleno.');
+ game.coins-=item.price;pendingFish=makeFish(id);
+ document.getElementById('modalEmoji').textContent=item.emoji;document.getElementById('modalTitle').textContent='¡Nueva mascota!';
+ document.getElementById('modalText').textContent='Dale un nombre a tu '+item.name+'.';
+ document.getElementById('petNameInput').value='';document.getElementById('modalBg').style.display='flex';save();render();
+}
+function confirmName(){if(!pendingFish)return;const n=document.getElementById('petNameInput').value.trim();if(n)pendingFish.name=n;game.fish.push(pendingFish);game.totalFish++;pendingFish=null;closeModal();save();render();notify('¡Tu nueva mascota llegó! 🐠')}
+function closeModal(){document.getElementById('modalBg').style.display='none'}
+function triggerFish(id,action){
+ const fishEl=document.querySelector('[data-fish-id="'+id+'"]');
+ if(fishEl){fishEl.classList.remove('eating','happy','cleaning');void fishEl.offsetWidth;fishEl.classList.add(action);setTimeout(()=>fishEl.classList.remove(action),2200)}
+ if(action==='happy'||action==='cleaning')heartEffect();
+}
+function heartEffect(){
+ const a=document.getElementById('aquarium');const h=document.createElement('div');h.className='heart-float';h.textContent='💖';h.style.left=(20+Math.random()*60)+'%';h.style.top=(45+Math.random()*35)+'%';a.appendChild(h);setTimeout(()=>h.remove(),1600);
+}
+function buyFood(id){const f=foods.find(x=>x.id===id);if(game.coins<f.price)return notify('Te faltan monedas.');game.coins-=f.price;game.inventory[id]=(game.inventory[id]||0)+f.amount;save();render();notify('Compraste '+f.amount+' paquetes.')}
+
+let feedingFishId=null;
+function openFeedMenu(id){
+ const f=game.fish.find(x=>x.id===id);if(!f||!f.alive)return;
+ feedingFishId=id;
+ const item=catalog.find(x=>x.id===f.type);
+ document.getElementById('feedModalEmoji').textContent=f.emoji;
+ document.getElementById('feedModalTitle').textContent='Comida para '+f.name;
+ document.getElementById('feedModalText').textContent='Su alimento favorito es '+(foods.find(x=>x.id===item.food)?.name||'su comida habitual')+'. ¡Elige una porción!';
+ document.getElementById('feedChoices').innerHTML=foods.map(food=>{
+  const count=game.inventory[food.id]||0,preferred=food.id===item.food,available=count>0;
+  return `<button class="feed-choice" ${available?'':'disabled'} onclick="feedOne(${id},'${food.id}')">
+   <span class="food-symbol">${food.emoji}</span><span class="food-copy"><b>${food.name} ${preferred?'⭐ Favorita':''}</b><small>${food.desc}</small></span><b>${count} porciones</b>
+  </button>`;
+ }).join('');
+ document.getElementById('feedModalBg').style.display='flex';
+}
+function closeFeedMenu(){document.getElementById('feedModalBg').style.display='none';feedingFishId=null}
+function dropFoodEffect(id,emoji){
+ const aquarium=document.getElementById('aquarium');
+ const fishEl=aquarium.querySelector('[data-fish-id="'+id+'"]');
+ const x=fishEl?(parseFloat(fishEl.style.left)||45):45;
+ for(let i=0;i<5;i++){
+  const piece=document.createElement('div');piece.className='feed-pop';piece.textContent=emoji;
+  piece.style.left=(x+Math.random()*9-4)+'%';piece.style.top='28px';piece.style.animationDelay=(i*.09)+'s';
+  aquarium.appendChild(piece);setTimeout(()=>piece.remove(),1600);
+ }
+}
+
+function feedOne(id,foodId){
+ const f=game.fish.find(x=>x.id===id);if(!f||!f.alive)return;
+ const item=catalog.find(x=>x.id===f.type),key=foodId||item.food;
+ if(!foods.some(x=>x.id===key))return;
+ if(!game.inventory[key])return notify('No tienes esa comida. Visita la tienda. 🍽️');
+ game.inventory[key]--;
+ const favorite=key===item.food,premium=key==='premium';
+ f.hunger=Math.min(100,f.hunger+(favorite?42:premium?40:30));
+ f.happy=Math.min(100,f.happy+(favorite?18:12));
+ f.health=Math.min(100,f.health+(favorite?7:premium?6:3));
+ f.lastFed=Date.now();game.xp+=favorite?7:5;save();
+ closeFeedMenu();renderPets();renderInventory();renderShop();updateStats();
+ dropFoodEffect(id,foods.find(x=>x.id===key).emoji);triggerFish(id,'eating');
+ notify(favorite?'¡A '+f.name+' le encantó su comida favorita! ⭐':'¡'+f.name+' ha comido! 🥣');
+}
+function feedAll(){
+ const alive=game.fish.filter(f=>f.alive);if(!alive.length)return notify('Primero compra una mascota.');
+ let fed=0;
+ alive.forEach(f=>{const item=catalog.find(x=>x.id===f.type),key=game.inventory[item.food]>0?item.food:'premium';if(game.inventory[key]>0){game.inventory[key]--;f.hunger=Math.min(100,f.hunger+35);f.happy=Math.min(100,f.happy+10);f.health=Math.min(100,f.health+4);f.lastFed=Date.now();fed++;setTimeout(()=>triggerFish(f.id,'eating'),fed*150)}});
+ if(fed){game.xp+=fed*5;notify('¡Alimentaste a '+fed+' mascotas!')}else notify('No tienes comida suficiente.');
+ save();renderPets();renderInventory();renderShop();updateStats();
+}
+function playWith(id){
+ const f=game.fish.find(x=>x.id===id);if(!f||!f.alive)return;
+ if(Date.now()-f.lastPlay<30000)return notify('Espera un poquito para volver a jugar con '+f.name+'.');
+ f.lastPlay=Date.now();f.happy=Math.min(100,f.happy+22);game.coins+=5;game.xp+=3;
+ save();renderPets();updateStats();triggerFish(id,'happy');notify('¡Jugaste con '+f.name+'! +5 monedas 🪙');
+}
+function cleanWater(){
+ if(game.coins<30)return notify('Necesitas 30 monedas.');
+ game.coins-=30;game.water=100;game.fish.filter(f=>f.alive).forEach(f=>{f.health=Math.min(100,f.health+5);setTimeout(()=>triggerFish(f.id,'cleaning'),Math.random()*500)});
+ const a=document.getElementById('aquarium'),flash=document.createElement('div');flash.className='clean-flash';a.appendChild(flash);setTimeout(()=>flash.remove(),2200);
+ game.xp+=10;save();renderPets();updateStats();notify('¡Agua limpia y fresca! 🫧');
+}
+
+function cleanGlass(){
+ if(game.coins<15)return notify('Necesitas 15 monedas para limpiar los cristales.');
+ game.coins-=15;game.glass=100;game.xp+=4;save();render();notify('¡Cristales impecables! Ahora se ve mucho mejor. ✨');
+}
+function maintainFilter(){
+ if(game.coins<25)return notify('Necesitas 25 monedas para mantener el filtro.');
+ game.coins-=25;game.filter=100;game.water=Math.min(100,game.water+18);
+ game.fish.filter(f=>f.alive).forEach(f=>f.health=Math.min(100,f.health+3));
+ game.xp+=7;save();render();notify('¡Filtro funcionando al máximo! 🫧');
+}
+function waterTest(){
+ const status=game.water>=75?'excelente':game.water>=45?'aceptable':'necesita atención';
+ const filterStatus=game.filter>=60?'bien': 'necesita mantenimiento';
+ notify('Agua: '+Math.round(game.water)+'% ('+status+'). Filtro: '+Math.round(game.filter)+'% ('+filterStatus+').');
+}
+
+function claimReward(){if(Date.now()-game.lastReward<3600000)return notify('Vuelve en una hora.');game.lastReward=Date.now();game.coins+=50;game.xp+=10;save();render();notify('¡Ganaste 50 monedas y 10 XP!')}
+function dailyReward(){const now=new Date().toDateString();if(game.lastDaily===now)return notify('Ya reclamaste tu premio de hoy.');game.lastDaily=now;game.coins+=150;game.gems+=2;save();render();notify('¡150 monedas y 2 gemas!')}
+function buyDecor(id){const d=decorations.find(x=>x.id===id);if(!d)return;if(game.coins<d.price)return notify('No tienes suficientes monedas.');game.coins-=d.price;game.decor.push(id);save();render();notify('¡'+d.name+' agregado a tu acuario! '+d.emoji)}
+function buySpecial(id){if(id==='filter'){if(game.coins<200)return notify('Te faltan monedas.');game.coins-=200;game.water=100;notify('¡Filtro instalado!')}if(id==='gem'){if(game.coins<500)return notify('Te faltan monedas.');game.coins-=500;game.gems+=5;notify('¡Recibiste 5 gemas virtuales!')}save();render()}
+function updateStats(){
+ document.getElementById('coins').textContent=game.coins;document.getElementById('gems').textContent=game.gems;
+ document.getElementById('waterText').textContent=Math.round(game.water)+'%';document.getElementById('waterBar').style.width=game.water+'%';
+  const fb=document.getElementById('filterBar'),ft=document.getElementById('filterText'),gb=document.getElementById('glassBar'),gt=document.getElementById('glassText');if(fb){fb.style.width=game.filter+'%';fb.style.background=game.filter<30?'#ff697d':'#5dffba';ft.textContent=Math.round(game.filter)+'%';gb.style.width=game.glass+'%';gb.style.background=game.glass<30?'#ff697d':'#5dffba';gt.textContent=Math.round(game.glass)+'%';}
+ document.getElementById('fishCount').textContent=game.fish.filter(f=>f.alive).length+' peces';
+ document.getElementById('level').textContent=game.level;document.getElementById('profileLevel').textContent=game.level;
+ document.getElementById('xp').textContent=game.xp+' XP';document.getElementById('totalFish').textContent=game.totalFish;document.getElementById('days').textContent=game.day;
+}
+function render(){updateStats();renderAquarium();renderPets();renderShop();renderInventory();renderGamePets()}
+function renderAquarium(){
+ const a=document.getElementById('aquarium');a.querySelectorAll('.fish-body,.seahorse,.jelly,.bubble,.decoration').forEach(x=>x.remove());
+ game.fish.filter(f=>f.alive).forEach((f,i)=>{
+  const item=catalog.find(x=>x.id===f.type);
+  if(['seahorse','turtle','shark','octopus'].includes(f.type)){
+   const e=document.createElement('div');e.className='seahorse';e.textContent=f.emoji;e.dataset.fishId=f.id;e.style.left=(8+(i%4)*22)+'%';e.style.top=(75+Math.floor(i/4)*65)+'px';e.style.animationDelay=(i*.7)+'s';a.appendChild(e);
+  }else if(f.type==='jelly'){
+   const e=document.createElement('div');e.className='jelly';e.textContent='🪼';e.dataset.fishId=f.id;e.style.left=(12+(i%4)*21)+'%';e.style.top=(65+Math.floor(i/4)*70)+'px';a.appendChild(e);
+  }else{
+   const e=document.createElement('div');e.className='fish-body';e.dataset.fishId=f.id;e.style.left=(10+(i%4)*21)+'%';e.style.top=(85+Math.floor(i/4)*70)+'px';
+   e.style.setProperty('--fish-color',item.color);e.style.setProperty('--fish-light',item.color+'cc');e.style.setProperty('--fish-dark','#123c63');e.style.animationDelay=(i*.7)+'s';
+   if(f.age<1)e.classList.add('small');if(f.age>=3)e.classList.add('large');
+   const eye=document.createElement('div');eye.className='fish-eye';e.appendChild(eye);
+   if(f.type==='clown'||f.type==='angel'){const stripe=document.createElement('div');stripe.className='fish-stripe';e.appendChild(stripe)}
+   a.appendChild(e);
+  }
+ });
+ game.decor.forEach((id,i)=>{const d=decorations.find(x=>x.id===id);if(!d)return;const e=document.createElement('div');e.className='decoration';e.textContent=d.emoji;e.style.position='absolute';e.style.zIndex='3';e.style.bottom=(22+(i%2)*5)+'px';e.style.left=(25+(i*13)%65)+'%';e.style.fontSize='35px';e.style.filter='drop-shadow(0 4px 4px #00253d88)';a.appendChild(e)});
+ for(let i=0;i<10;i++){const b=document.createElement('div');b.className='bubble';b.style.left=(5+i*10)+'%';b.style.animationDelay=(i*.7)+'s';a.appendChild(b)}
+}
+function meter(label,value){const color=value<30?'#ff697d':value<60?'#ffd16a':'#5dffba';return `<div class="barline"><span>${label}</span><div class="progress"><div style="width:${value}%;background:${color}"></div></div><b>${Math.round(value)}%</b></div>`}
+function renderPets(){
+ const el=document.getElementById('pets');
+ if(!game.fish.length){el.innerHTML='<div class="empty" style="grid-column:1/-1">🐠<br>Aún no tienes mascotas.<br>¡Visita la tienda para adoptar tu primer pez!</div>';return}
+ el.innerHTML=game.fish.map(f=>`<div class="card"><div class="pet"><div class="pet-icon">${f.alive?f.emoji:'🪦'}</div><div><div class="pet-name">${escapeHTML(f.name)}</div><div class="pet-info">${f.alive?(f.age<1?'Bebé':f.age<3?'Joven':'Adulto'):'Mascota fallecida'}</div></div></div>
+ ${f.alive?`<div class="pet-bars">${meter('🍽️ Hambre',f.hunger)}${meter('❤️ Salud',f.health)}${meter('😊 Felicidad',f.happy)}</div>
+ <button class="primary" style="width:100%;margin-top:10px" onclick="openFeedMenu(${f.id})">🥣 Elegir comida</button>
+ <button class="secondary" style="width:100%;margin-top:7px" onclick="playWith(${f.id})">🎾 Jugar (+5 monedas)</button>`:'<p class="muted">Esta mascota ya no está contigo.</p>'}</div>`).join('');
+}
+function renderShop(){
+ document.getElementById('fishShop').innerHTML=catalog.map(f=>`<div class="shop-item"><div class="shop-emoji">${f.emoji}</div><div class="shop-details"><strong>${f.name}</strong><div class="muted">${f.description}</div></div><button class="buy" onclick="buyFish('${f.id}')">🪙 ${f.price}</button></div>`).join('');
+ document.getElementById('foodShop').innerHTML=foods.map(f=>`<div class="food-card"><div class="food-art">${f.emoji}</div><div class="food-info"><strong>${f.name}</strong><small>${f.desc}</small><div class="food-stock">En inventario: ${game.inventory[f.id]||0} porciones</div></div><button class="buy" onclick="buyFood('${f.id}')">🪙 ${f.price}<br><small style="font-size:10px">+${f.amount} porciones</small></button></div>`).join('');
+ document.getElementById('decorShop').innerHTML=decorations.map(d=>`<div class="shop-item"><div class="shop-emoji">${d.emoji}</div><div class="shop-details"><strong>${d.name}</strong><div class="muted">${d.desc}</div></div><button class="buy" onclick="buyDecor('${d.id}')">🪙 ${d.price}</button></div>`).join('');
+ document.getElementById('specialShop').innerHTML=`<div class="shop-item"><div class="shop-emoji">🫧</div><div class="shop-details"><strong>Filtro de agua</strong><div class="muted">Limpia tu acuario al instante.</div></div><button class="buy" onclick="buySpecial('filter')">200 🪙</button></div><div class="shop-item"><div class="shop-emoji">💎</div><div class="shop-details"><strong>Pack de gemas</strong><div class="muted">5 gemas virtuales.</div></div><button class="buy" onclick="buySpecial('gem')">500 🪙</button></div>`;
+}
+function renderInventory(){
+ document.getElementById('inventoryList').innerHTML=foods.map(f=>`<div class="shop-item"><div class="shop-emoji">${f.emoji}</div><div class="shop-details"><strong>${f.name}</strong><div class="muted">Cantidad disponible</div></div><b style="font-size:20px">${game.inventory[f.id]||0}</b></div>`).join('')+'<h2>Decoraciones de tu acuario</h2>'+ (game.decor.length?game.decor.map(id=>{const d=decorations.find(x=>x.id===id);return d?`<div class="shop-item"><div class="shop-emoji">${d.emoji}</div><div class="shop-details"><strong>${d.name}</strong><div class="muted">Colocada en tu acuario</div></div><b>✓</b></div>`:''}).join(''):'<p class="muted">Todavía no tienes decoraciones.</p>');
+}
+function renderGamePets(){
+ const el=document.getElementById('gamePetList');const alive=game.fish.filter(f=>f.alive);
+ if(!alive.length){el.innerHTML='<div class="empty" style="grid-column:1/-1">Primero adopta una mascota para jugar. 🐠</div>';return}
+ el.innerHTML=alive.map(f=>`<button class="game-choice" onclick="selectGamePet(${f.id})"><span>${f.emoji}</span>${escapeHTML(f.name)}<small style="display:block;color:#9bbbd1">😊 ${Math.round(f.happy)}% feliz</small></button>`).join('');
+}
+function selectGamePet(id){
+ selectedFishId=id;const f=game.fish.find(x=>x.id===id);if(!f||!f.alive)return;
+ document.getElementById('gameSelection').style.display='block';document.getElementById('selectedPet').textContent=f.emoji;document.getElementById('selectedName').textContent=f.name;
+ document.getElementById('gamePetList').style.display='none';document.getElementById('activeGame').style.display='none';
+}
+function backToPets(){document.getElementById('gameSelection').style.display='none';document.getElementById('gamePetList').style.display='grid'}
+function startGame(type){
+ const f=game.fish.find(x=>x.id===selectedFishId);if(!f||!f.alive)return notify('Elige una mascota primero.');
+ document.getElementById('gameSelection').style.display='none';document.getElementById('activeGame').style.display='block';
+ gameScore=0;gameHits=0;updateGameScore();
+ const area=document.getElementById('gameArea');area.innerHTML='';
+ if(type==='bubbles'||type==='food'){
+  document.getElementById('gameTitle').textContent=type==='bubbles'?'🫧 Atrapa burbujas':'🦐 Atrapa comida';
+  document.getElementById('gameInstruction').textContent=type==='bubbles'?'Toca las burbujas brillantes antes de que desaparezcan. ¡Tienes 20 segundos!':'Atrapa los bocaditos marinos para sumar puntos. ¡Tienes 20 segundos!';
+  const stage=document.createElement('div');stage.className='game-stage';stage.id='stage';area.appendChild(stage);
+  let remaining=20;
+  gameTimer=setInterval(()=>{
+   remaining--;document.getElementById('gameInstruction').textContent='Tiempo: '+remaining+' segundos. ¡Sigue tocando!';
+   if(remaining<=0)endGame(true);
+   else spawnTarget(type);
+  },750);
+  spawnTarget(type);
+ }else if(type==='memory'){
+  document.getElementById('gameTitle').textContent='🧠 Memoria marina';document.getElementById('gameInstruction').textContent='Encuentra las parejas de animales.';
+  memoryCards=['🐠','🐢','🦀','🐙','🪼','🦈','🐡','🦐'];memoryCards=[...memoryCards,...memoryCards].sort(()=>Math.random()-.5);memoryOpen=[];memoryMatched=0;
+  const grid=document.createElement('div');grid.className='memory-grid';grid.id='memoryGrid';area.appendChild(grid);
+  memoryCards.forEach((emoji,i)=>{const b=document.createElement('button');b.className='memory-card';b.textContent='❔';b.onclick=()=>flipMemory(i,b);grid.appendChild(b)});
+ }else{
+  document.getElementById('gameTitle').textContent='🎵 Baile acuático';document.getElementById('gameInstruction').textContent='Toca el botón al ritmo y diviértete con tu pez.';
+  const dance=document.createElement('div');dance.style.textAlign='center';dance.style.padding='35px 10px';dance.innerHTML=`<div style="font-size:75px;animation:happy .7s infinite">${f.emoji}</div><button class="primary" style="font-size:20px;margin-top:20px" onclick="danceTap()">💃 ¡BAILAR!</button>`;area.appendChild(dance);
+  let remaining=15;gameTimer=setInterval(()=>{remaining--;document.getElementById('gameInstruction').textContent='¡Sigue bailando! '+remaining+' segundos';if(remaining<=0)endGame(true)},1000);
+ }
+}
+function updateGameScore(){document.getElementById('gameScore').textContent=gameScore+' puntos'}
+function spawnTarget(type){
+ const stage=document.getElementById('stage');if(!stage)return;
+ const b=document.createElement('button');b.className='game-target';b.textContent=type==='bubbles'?'🫧':['🦐','🥬','🐟'][Math.floor(Math.random()*3)];
+ b.style.left=(5+Math.random()*82)+'%';b.style.top=(5+Math.random()*75)+'%';
+ b.onclick=()=>{gameScore+=type==='bubbles'?2:3;gameHits++;updateGameScore();b.animate([{transform:'scale(1)',opacity:1},{transform:'scale(1.7)',opacity:0}],{duration:180});setTimeout(()=>b.remove(),160)};
+ stage.appendChild(b);setTimeout(()=>b.remove(),2100);
+}
+function flipMemory(i,b){
+ if(b.classList.contains('done')||memoryOpen.some(x=>x.i===i)||memoryOpen.length===2)return;
+ b.textContent=memoryCards[i];memoryOpen.push({i,b});
+ if(memoryOpen.length===2){
+  if(memoryCards[memoryOpen[0].i]===memoryCards[memoryOpen[1].i]){
+   memoryOpen.forEach(x=>x.b.classList.add('done'));memoryMatched++;gameScore+=10;memoryOpen=[];
+   updateGameScore();if(memoryMatched===8)setTimeout(()=>endGame(true),600);
+  }else{setTimeout(()=>{memoryOpen.forEach(x=>x.b.textContent='❔');memoryOpen=[]},750)}
+ }
+}
+function danceTap(){gameScore+=2;gameHits++;updateGameScore();const f=game.fish.find(x=>x.id===selectedFishId);if(f)triggerFish(f.id,'happy')}
+function endGame(completed){
+ if(gameTimer){clearInterval(gameTimer);gameTimer=null}
+ const f=game.fish.find(x=>x.id===selectedFishId);
+ if(completed&&f&&f.alive){
+  const reward=Math.max(5,Math.floor(gameScore/2));f.happy=Math.min(100,f.happy+25);f.lastPlay=Date.now();game.coins+=reward;game.xp+=Math.floor(reward/2);save();
+  notify('¡Buen trabajo! '+f.name+' está feliz. +'+reward+' monedas 🪙');renderPets();updateStats();renderGamePets();triggerFish(f.id,'happy');
+ }
+ document.getElementById('activeGame').style.display='none';document.getElementById('gameSelection').style.display='block';
+ document.getElementById('gameArea').innerHTML='';
+}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function resetGame(){if(confirm('¿Seguro que quieres borrar todo tu progreso?')){localStorage.removeItem('aquaLifeSave');location.reload()}}
+function updateWorld(){
+ const now=Date.now(),elapsed=Math.max(0,Math.min(now-game.lastTime,30*86400000)),hours=elapsed/3600000;if(hours<=0)return;
+ game.day+=Math.floor(hours/24);game.filter=Math.max(0,game.filter-hours*.42);game.glass=Math.max(0,game.glass-hours*.18);game.water=Math.max(0,game.water-hours*(game.filter<25?1.8:1.1));
+ game.fish.forEach(f=>{if(!f.alive)return;f.age+=hours/720;f.hunger=Math.max(0,f.hunger-hours*3.1);f.happy=Math.max(0,f.happy-hours*1.5);if(game.water<35)f.health-=hours*2;if(f.hunger<25)f.health-=hours*3;if(f.happy<15)f.health-=hours*.3;f.health=Math.max(0,Math.min(100,f.health));if(f.health<=0){f.alive=false;notify('Una mascota ha fallecido por falta de cuidados.')}});
+ game.xp+=Math.floor(hours);const lvl=Math.floor(game.xp/100)+1;if(lvl>game.level){game.level=lvl;game.coins+=100;notify('¡Subiste al nivel '+lvl+'! +100 monedas ⭐')}
+ game.lastTime=now;save();
+}
+updateWorld();render();setInterval(()=>{updateWorld();render()},60000);
+
+/* ===== DAY / SUNSET / NIGHT AND REFUGE AI ===== */
+const aquariumPhases=[
+ {id:'day',name:'Día',icon:'☀️',hint:'Agua cristalina'},
+ {id:'sunset',name:'Atardecer',icon:'🌇',hint:'Luz cálida y tranquila'},
+ {id:'night',name:'Noche',icon:'🌙',hint:'Criaturas bioluminiscentes'}
+];
+let phaseIndex=0,phaseManualUntil=0,lastPhaseAuto=Date.now(),aquariumPhaseTimer=null;
+const refugeTypes=new Set(['castle','treasure','cottage','cave']);
+function getRefuges(){return [...document.querySelectorAll('#aquarium [data-refuge="true"]')]}
+function setAquariumPhase(index,manual=false){
+ phaseIndex=(index+aquariumPhases.length)%aquariumPhases.length;
+ const phase=aquariumPhases[phaseIndex],a=document.getElementById('aquarium');
+ a.dataset.phase=phase.id;
+ document.getElementById('cycleIcon').textContent=phase.icon;
+ document.getElementById('cycleName').textContent=phase.name;
+ document.getElementById('cycleClock').textContent=phase.hint;
+ if(manual)phaseManualUntil=Date.now()+180000;
+ updateSleepBehavior();
+}
+function nextAquariumPhase(){setAquariumPhase(phaseIndex+1,true);notify('El acuario cambió a '+aquariumPhases[phaseIndex].name+'.')}
+function autoAquariumPhase(){
+ if(Date.now()<phaseManualUntil)return;
+ // Automatic cycle: 2 minutes per phase, then repeat.
+ const next=Math.floor(Date.now()/120000)%3;
+ if(next!==phaseIndex)setAquariumPhase(next,false);
+}
+function refugePosition(el){
+ return {x:Math.max(5,Math.min(90,parseFloat(el.style.left)||50)),y:78};
+}
+function updateSleepBehavior(){
+ const night=phaseIndex===2;
+ const refuges=getRefuges();
+ game.fish.filter(f=>f.alive).forEach(f=>{
+  const el=document.querySelector('[data-fish-id="'+f.id+'"]');if(!el)return;
+  const shouldSleep=night;
+  if(shouldSleep&&!f.sleeping){
+   f.sleeping=true;
+   if(refuges.length){
+    const target=refuges[Math.abs(Math.floor(f.id))%refuges.length],pos=refugePosition(target);
+    el.style.left=(pos.x+((f.id%7)-3)*1.1)+'%';el.style.top='69%';
+   }
+   el.classList.add('sleeping');
+   if(!el.querySelector('.sleep-tag')){const z=document.createElement('span');z.className='sleep-tag';z.textContent='Zzz';el.appendChild(z)}
+  }else if(!shouldSleep&&f.sleeping){
+   f.sleeping=false;el.classList.remove('sleeping');el.querySelector('.sleep-tag')?.remove();
+   el.style.top=(65+Math.random()*95)+'px';
+   el.style.left=(8+Math.random()*78)+'%';
+  }
+ });
+}
+function creatureClick(event,id){
+ const el=event.currentTarget;if(!el)return;
+ const rect=el.getBoundingClientRect(),tank=document.getElementById('aquarium').getBoundingClientRect();
+ const ripple=document.createElement('i');ripple.className='creature-ripple';
+ ripple.style.left=(rect.left-tank.left+rect.width/2-8)+'px';ripple.style.top=(rect.top-tank.top+rect.height/2-8)+'px';
+ document.getElementById('aquarium').appendChild(ripple);setTimeout(()=>ripple.remove(),900);
+ const f=game.fish.find(x=>x.id===id);if(f){f.happy=Math.min(100,f.happy+2);save()}
+ triggerFish(id,'happy');
+ const h=document.createElement('div');h.className='heart-float';h.textContent='💖';
+ h.style.left=Math.max(4,Math.min(88,parseFloat(el.style.left)||40))+'%';h.style.top=Math.max(12,Math.min(75,parseFloat(el.style.top)||45))+'px';
+ document.getElementById('aquarium').appendChild(h);setTimeout(()=>h.remove(),1600);
+}
+function decorateCreature(el,f,i){
+ el.classList.add('creature-swim');el.style.setProperty('--drift',(18+Math.random()*32)+'px');
+ el.style.setProperty('--duration',(3.8+Math.random()*3.4)+'s');
+ el.style.animationDelay=(Math.random()*-4)+'s';
+ el.addEventListener('click',ev=>creatureClick(ev,f.id));
+ if(f.type==='jelly')el.dataset.glow='true';
+}
+const originalRenderAquarium=renderAquarium;
+renderAquarium=function(){
+ originalRenderAquarium();
+ const a=document.getElementById('aquarium');
+ a.querySelectorAll('.decoration').forEach((el,i)=>{
+  const id=game.decor[i],isRefuge=refugeTypes.has(id);
+  if(isRefuge){el.dataset.refuge='true';el.title='Refugio nocturno';}
+ });
+ game.fish.filter(f=>f.alive).forEach((f)=>{
+  const el=a.querySelector('[data-fish-id="'+f.id+'"]');if(!el)return;
+  decorateCreature(el,f,0);
+  if(f.sleeping){el.classList.add('sleeping');if(!el.querySelector('.sleep-tag')){const z=document.createElement('span');z.className='sleep-tag';z.textContent='Zzz';el.appendChild(z)}}
+ });
+ // Natural bubble variation: size, timing, drift and soft reflections.
+ a.querySelectorAll('.bubble').forEach((b,i)=>{
+  const size=4+Math.random()*10;b.style.width=size+'px';b.style.height=size+'px';
+  b.style.left=(3+Math.random()*94)+'%';b.style.animationDuration=(5+Math.random()*7)+'s';
+  b.style.animationDelay=(-Math.random()*8)+'s';b.style.opacity=(.28+Math.random()*.55).toFixed(2);
+ });
+};
+function keepAquariumAlive(){
+ autoAquariumPhase();
+ updateSleepBehavior();
+}
+setAquariumPhase(0,false);
+renderAquarium();
+keepAquariumAlive();
+aquariumPhaseTimer=setInterval(keepAquariumAlive,2500);
+
+</script>
+</body>
+</html>
